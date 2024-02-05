@@ -119,7 +119,7 @@ void MyVector<T>::insert(uint32_t index, T val) {
 
 template <typename T>
 void MyVector<T>::erase(uint32_t index) {
-    for(uint32_t i{index}; i < sz; ++i) {
+    for(uint32_t i{index}; i < sz - 1; ++i) {
         array[i] = array[i + 1];
     }
     resize(sz - 1);
