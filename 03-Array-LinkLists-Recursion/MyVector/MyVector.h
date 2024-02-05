@@ -2,7 +2,7 @@
 #define MYVECTOR_H
 
 #include <cstdint>
-
+#include <cassert>
 template <typename T>
 class MyVector {
 public :
@@ -26,27 +26,29 @@ public :
 
 private :
     T *array;
-    int sz, base;
+    uint32_t sz, base;
 };
 
 template <typename T>
 MyVector<T>::MyVector() {
     sz = 0;
-    base = 1;
+    base = 16;
     array = new T[base];
 }
 
 template <typename T>
 MyVector<T>::MyVector(uint32_t size) {
     sz = 0;
-    base = 1;
+    base = 16;
+    array = new T[base];
     resize(size);
 }
 
 template <typename T>
 MyVector<T>::MyVector(uint32_t size, T val) {
     sz = 0;
-    base = 1;
+    base = 16;
+    array = new T[base];
     resize(size);
     for(int i{0}; i < size; ++i) {
         array[i] = val;
@@ -55,8 +57,7 @@ MyVector<T>::MyVector(uint32_t size, T val) {
 
 template <typename T>
 MyVector<T>::~MyVector() {
-    if(array != nullptr)
-        delete[] array;
+    delete[] array;
 }
 
 template <typename T>
@@ -66,22 +67,23 @@ void MyVector<T>::resize(uint32_t size) {
         return;
     }
     
-    while(base < size) {
+    while(base <= size) {
         base <<= 1;
     }
+    assert(base >= size);
 
     T *tp = new T[base];
     for(int i{0}; i < sz; ++i) {
         tp[i] = array[i];
     }
     sz = size;
-    if(array != nullptr)
-        delete[] array;
+    delete[] array;
     array = tp;
 }
 
 template <typename T>
 T& MyVector<T>::operator[](uint32_t index) {
+    assert(index < sz);
     return array[index];
 }
 
@@ -89,7 +91,8 @@ template <typename T>
 void MyVector<T>::push_back(T val) {
     uint32_t push{sz};
     resize(sz + 1);
-    array[sz] = val;
+    assert(push + 1 == sz);
+    array[push] = val;
 }
 
 template <typename T>
@@ -108,7 +111,7 @@ void MyVector<T>::rebase(uint32_t length) {
 template <typename T>
 void MyVector<T>::insert(uint32_t index, T val) {
     resize(sz + 1);
-    for(int i{sz}; i >= index; --i) {
+    for(int i{sz - 1}; i >= index; --i) {
         array[i] = array[i - 1];
     }
     array[index] = val;
