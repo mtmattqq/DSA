@@ -16,6 +16,21 @@
 #define CYAN "\e[0;36m"
 #define REDB "\e[41m"
 
+struct Color {
+    int red, green, blue;
+    Color() {red = green = blue = 0;}
+    Color(int r, int g, int b) {
+        red = r;
+        green = g;
+        blue = b;
+    }
+};
+
+std::ostream& operator<<(std::ostream &out, const Color &color) {
+    out << "\e[38;2;" << color.red << ";" << color.green << ";" << color.blue << "m";
+    return out;
+}
+
 inline void io_speedup() {
     std::ios::sync_with_stdio(0); std::cin.tie(0);
 }
@@ -23,7 +38,7 @@ inline void io_speedup() {
 int main(int argc, char *argv[]) {
     // io_speedup();
     if(argc < 2) {
-        std::cout << RED "Error: miss argument: " GREEN "\"input file name\"" RESET << "\n";
+        std::cout << RED "Error: miss argument: " << Color(100, 255, 100) << "\"input file name\"" RESET << "\n";
         return -1;
     }
 
@@ -40,7 +55,7 @@ int main(int argc, char *argv[]) {
     }
 
     for(List::Node<int> *i{list.begin()}; i != list.end(); i = list.next(i)) {
-        std::cout << i->val << " ";
+        std::cout << Color(130, 130, 255) << i->val << RESET << " ";
     }
     std::cout << "\n";
 }
