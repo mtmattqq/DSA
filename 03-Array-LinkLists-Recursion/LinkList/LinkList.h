@@ -8,6 +8,12 @@ namespace List {
     struct Node {
         T val;
         Node *prev, *next;
+
+        Node() {prev = next = nullptr;}
+        Node(T v) {
+            val = v;
+            prev = next = nullptr;
+        }
     };
 };
 
