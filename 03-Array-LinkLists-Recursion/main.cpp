@@ -2,23 +2,24 @@
 #include <algorithm>
 #include "MyVector/MyVector.h"
 
+#define NC "\e[0m"
+#define RED "\e[0;31m"
+#define GRN "\e[0;32m"
+#define CYN "\e[0;36m"
+#define REDB "\e[41m"
 
-int main(void) {
+inline void io_speedup() {
     std::ios::sync_with_stdio(0); std::cin.tie(0);
+}
 
-    int n;
-    std::cin >> n;
-    MyVector<int> student;
-    for(int i{1}; i <= n; ++i) {
-        int a;
-        std::cin >> a;
-        student.push_back(a);
+int main(int argc, char *argv[]) {
+    // io_speedup();
+    if(argc < 2) {
+        std::cout << RED "Error: need file name" NC << "\n";
     }
 
-    std::sort(student.begin(), student.end());
+    for(int i{0}; i < argc; ++i) {
+        std::cout << argv[i] << "\n";
+    }
 
-    std::for_each(student.begin(), student.end(), [](int e) {
-        std::cout << e << " ";
-    });
-    std::cout << "\n";
 }
