@@ -5,6 +5,7 @@
 #include "MyVector/MyVector.h"
 #include "LinkList/LinkList.h"
 #include "Exercises/R-3-1.h"
+#include "Exercises/R-3-3.h"
 
 #define RESET "\e[0m"
 #define BOLD "\e[1m"
@@ -50,18 +51,17 @@ int main(int argc, char *argv[]) {
 
     int n;
     in >> n;
-    Scores scores(n);
-
+    std::vector<std::vector<float>> M(n, std::vector<float>(n));
     for(int i{0}; i < n; ++i) {
-        std::string name;
-        int score;
-        in >> name >> score;
-        GameEntry entry(name, score);
-        scores.add(entry);
+        for(int j{0}; j < n; ++j) {
+            in >> M[i][j];
+        }
     }
-
-    for(int i{0}; i < n - 1; ++i) {
-        GameEntry entry = scores.remove(0);
-        std::cout << CYAN << entry.getName() << " " << Color(150, 255, 150) << entry.getScore() << RESET << "\n";
+    transpose(M);
+    for(int i{0}; i < n; ++i) {
+        for(int j{0}; j < n; ++j) {
+            std::cout << M[i][j] << " ";
+        }
+        std::cout << "\n";
     }
 }
