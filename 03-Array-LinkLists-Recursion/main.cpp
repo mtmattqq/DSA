@@ -60,8 +60,8 @@ int main(int argc, char *argv[]) {
         scores.add(entry);
     }
 
-    for(int i{0}; i < n; ++i) {
+    for(int i{0}; i < n - 1; ++i) {
         GameEntry entry = scores.remove(0);
-        std::cout << CYAN << entry.getName() << " " << GREEN << entry.getScore() << RESET << "\n";
+        std::cout << CYAN << entry.getName() << " " << Color(150, 255, 150) << entry.getScore() << RESET << "\n";
     }
 }
