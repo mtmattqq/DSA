@@ -1,8 +1,10 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
+#include <string>
 #include "MyVector/MyVector.h"
 #include "LinkList/LinkList.h"
+#include "Exercises/R-3-1.h"
 
 #define RESET "\e[0m"
 #define BOLD "\e[1m"
@@ -48,16 +50,18 @@ int main(int argc, char *argv[]) {
 
     int n;
     in >> n;
-    LinkList<int> list;
-    
+    Scores scores(n);
+
     for(int i{0}; i < n; ++i) {
-        int a;
-        in >> a;
-        list.insert(list.begin(), a);
+        std::string name;
+        int score;
+        in >> name >> score;
+        GameEntry entry(name, score);
+        scores.add(entry);
     }
 
-    for(List::Node<int> *i{list.begin()}; i != list.end(); i = list.next(i)) {
-        std::cout << Color(130, 130, 255) << i->val << RESET << " ";
+    for(int i{0}; i < n; ++i) {
+        GameEntry entry = scores.remove(0);
+        std::cout << CYAN << entry.getName() << " " << GREEN << entry.getScore() << RESET << "\n";
     }
-    std::cout << "\n";
 }
