@@ -9,6 +9,7 @@ public :
     MyVector();
     MyVector(uint32_t);
     MyVector(uint32_t, T);
+    MyVector(MyVector&);
     ~MyVector();
 
     T& operator[](uint32_t);
@@ -52,6 +53,16 @@ MyVector<T>::MyVector(uint32_t size, T val) {
     resize(size);
     for(int i{0}; i < size; ++i) {
         array[i] = val;
+    }
+}
+
+template <typename T>
+MyVector<T>::MyVector(MyVector &vec) {
+    sz = vec.sz;
+    base = vec.base;
+    array = new T[base];
+    for(int i{0}; i < size; ++i) {
+        array[i] = vec[i];
     }
 }
 
