@@ -13,13 +13,13 @@ public:
     BigInt();
     BigInt(std::string);
     BigInt(int64_t);
-    BigInt(const BigInt&);
+    BigInt(BigInt&);
 
-    friend BigInt operator+(const BigInt&, const BigInt&);
-    friend BigInt operator-(const BigInt&, const BigInt&);
-    friend BigInt operator*(const BigInt&, const BigInt&);
-    friend BigInt operator/(const BigInt&, const BigInt&);
-    friend BigInt operator%(const BigInt&, const BigInt&);
+    friend BigInt operator+(BigInt&, BigInt&);
+    friend BigInt operator-(BigInt&, BigInt&);
+    friend BigInt operator*(BigInt&, BigInt&);
+    friend BigInt operator/(BigInt&, BigInt&);
+    friend BigInt operator%(BigInt&, BigInt&);
 
     void operator+=(BigInt&);
     void operator-=(BigInt&);
@@ -66,30 +66,30 @@ BigInt::BigInt(int64_t num) {
     }
 }
 
-BigInt::BigInt(const BigInt &num) {
+BigInt::BigInt(BigInt &num) {
     sign = num.sign;
     number = num.number;
 }
 
-BigInt operator+(const BigInt &a, const  BigInt &b) {
+BigInt operator+(BigInt &a, BigInt &b) {
     BigInt ret(a);
     ret += b;
     return ret;
 }
 
-BigInt operator-(const BigInt &a, const  BigInt &b) {
+BigInt operator-(BigInt &a, BigInt &b) {
     BigInt ret(a);
     ret -= b;
     return ret;
 }
 
-BigInt operator*(const BigInt &a, const  BigInt &b) {
+BigInt operator*(BigInt &a, BigInt &b) {
     BigInt ret(a);
     ret /= b;
     return ret;
 }
 
-BigInt operator%(const BigInt &a, const  BigInt &b) {
+BigInt operator%(BigInt &a, BigInt &b) {
     BigInt ret(a);
     ret %= b;
     return ret;
