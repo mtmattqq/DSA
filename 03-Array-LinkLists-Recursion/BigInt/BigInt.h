@@ -6,6 +6,7 @@
 #include <cstdint>
 #include <string>
 #include <stdexcept>
+#include <algorithm>
 
 class BigInt {
 public:
@@ -92,6 +93,10 @@ BigInt operator%(const BigInt &a, const  BigInt &b) {
     BigInt ret(a);
     ret %= b;
     return ret;
+}
+
+void BigInt::operator+=(const BigInt &b) {
+    number.resize(std::max(number.size(), b.number.size()));
 }
 
 #endif

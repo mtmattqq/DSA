@@ -21,7 +21,7 @@ public :
     void erase(uint32_t);
 
     bool empty();
-    uint32_t size();
+    uint32_t size() const;
     T* begin();
     T* end();
 
@@ -142,7 +142,7 @@ bool MyVector<T>::empty() {
 }
 
 template <typename T>
-uint32_t MyVector<T>::size() {
+uint32_t MyVector<T>::size() const {
     return sz;
 }
 
