@@ -21,11 +21,11 @@ public:
     friend BigInt operator/(const BigInt&, const BigInt&);
     friend BigInt operator%(const BigInt&, const BigInt&);
 
-    void operator+=(const BigInt&);
-    void operator-=(const BigInt&);
-    void operator*=(const BigInt&);
-    void operator/=(const BigInt&);
-    void operator%=(const BigInt&);
+    void operator+=(BigInt&);
+    void operator-=(BigInt&);
+    void operator*=(BigInt&);
+    void operator/=(BigInt&);
+    void operator%=(BigInt&);
 
     friend std::ostream& operator<<(std::ostream &out, BigInt&);
     friend std::istream& operator>>(std::istream &in, BigInt&);
@@ -95,8 +95,16 @@ BigInt operator%(const BigInt &a, const  BigInt &b) {
     return ret;
 }
 
-void BigInt::operator+=(const BigInt &b) {
-    number.resize(std::max(number.size(), b.number.size()));
+void BigInt::operator+=(BigInt &b) {
+    number.resize(std::max(number.size(), b.number.size()) + 1);
+    for(int i{0}; i < number.size() - 1; ++i) {
+        if(b.number.size() <= i) {
+            continue;
+        }
+        number[i] += b.number[i];
+        number[i + 1] += number[i] / 10;
+        number[i] %= 10;
+    }
 }
 
 #endif
