@@ -7,6 +7,7 @@
 #include "Exercises/R-3-1.h"
 #include "Exercises/R-3-3.h"
 #include "Exercises/R-3-4.h"
+#include "BigInt/BigInt.h"
 
 #define RESET "\e[0m"
 #define BOLD "\e[1m"
@@ -47,16 +48,22 @@ int main(int argc, char *argv[]) {
         std::cout << RED "Error: miss argument: " << Color(100, 255, 100) << "\"input file name\"" RESET << "\n";
         return -1;
     }
-
+    
     std::ifstream in(argv[1]);
+    BigInt a, b;
 
-    int n;
-    in >> n;
-    std::vector<std::vector<int>> M(n, std::vector<int>(n));
-    for(int i{0}; i < n; ++i) {
-        for(int j{0}; j < n; ++j) {
-            in >> M[i][j];
-        }
+    while(in >> a >> b) {
+        std::cout << a << " + " << b << " = ";
+        std::cout << a + b << "\n";
+        std::cout << a << " - " << b << " = ";
+        std::cout << a - b << "\n";
+        std::cout << a << " x " << b << " = ";
+        std::cout << a * b << "\n";
+        std::cout << a << " / " << b << " = ";
+        std::cout << a / b << "\n";
+        std::cout << a << " % " << b << " = ";
+        std::cout << a % b << "\n";
+        
+        std::cout << "\n";
     }
-    std::cout << "sum = " << sum(M, 0, 0) << "\n";
 }

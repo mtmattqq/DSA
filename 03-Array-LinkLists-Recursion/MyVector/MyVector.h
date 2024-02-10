@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <cassert>
+#include <stdexcept>
 template <typename T>
 class MyVector {
 public :
@@ -24,6 +25,9 @@ public :
     uint32_t size() const;
     T* begin();
     T* end();
+    T& front();
+    T& back();
+    void operator=(MyVector&);
 
 private :
     T *array;
@@ -61,7 +65,7 @@ MyVector<T>::MyVector(MyVector &vec) {
     sz = vec.sz;
     base = vec.base;
     array = new T[base];
-    for(int i{0}; i < size; ++i) {
+    for(int i{0}; i < sz; ++i) {
         array[i] = vec[i];
     }
 }
@@ -74,6 +78,9 @@ MyVector<T>::~MyVector() {
 template <typename T>
 void MyVector<T>::resize(uint32_t size) {
     if(base >= size) {
+        for(int i{int(std::min(sz, size))}; i < std::max(sz, size); ++i) {
+            array[i] = 0;
+        }
         sz = size;
         return;
     }
@@ -87,6 +94,9 @@ void MyVector<T>::resize(uint32_t size) {
     for(int i{0}; i < sz; ++i) {
         tp[i] = array[i];
     }
+    for(int i{int(sz)}; i < base; ++i) {
+        tp[i] = 0;
+    }
     sz = size;
     delete[] array;
     array = tp;
@@ -94,7 +104,9 @@ void MyVector<T>::resize(uint32_t size) {
 
 template <typename T>
 T& MyVector<T>::operator[](uint32_t index) {
-    assert(index < sz);
+    if(index >= sz) 
+        throw std::out_of_range(
+            "Error: index out of range: expect index < " + std::to_string(sz) + ", found " + std::to_string(index) + " (MyVector)");
     return array[index];
 }
 
@@ -154,6 +166,26 @@ T* MyVector<T>::begin() {
 template <typename T>
 T* MyVector<T>::end() {
     return array + sz;
+}
+
+template <typename T>
+T& MyVector<T>::front() {
+    return array[0];
+}
+
+template <typename T>
+T& MyVector<T>::back() {
+    return array[sz - 1];
+}
+
+template <typename T>
+void MyVector<T>::operator=(MyVector &vec) {
+    sz = vec.sz;
+    base = vec.base;
+    array = new T[base];
+    for(int i{0}; i < sz; ++i) {
+        array[i] = vec[i];
+    }
 }
 
 #endif
