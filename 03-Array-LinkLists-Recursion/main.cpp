@@ -53,17 +53,18 @@ int main(int argc, char *argv[]) {
     BigInt a, b;
 
     while(in >> a >> b) {
-        std::cout << a << " + " << b << " = ";
-        std::cout << a + b << "\n";
-        std::cout << a << " - " << b << " = ";
-        std::cout << a - b << "\n";
-        std::cout << a << " x " << b << " = ";
-        std::cout << a * b << "\n";
-        std::cout << a << " / " << b << " = ";
-        std::cout << a / b << "\n";
-        std::cout << a << " % " << b << " = ";
-        std::cout << a % b << "\n";
-        
+        // std::cout << a << " + " << b << " = ";
+        // std::cout << a + b << "\n";
+        // std::cout << a << " - " << b << " = ";
+        // std::cout << a - b << "\n";
+        // std::cout << a << " x " << b << " = ";
+        // std::cout << a * b << "\n";
+        // std::cout << a << " / " << b << " = ";
+        // std::cout << a / b << "\n";
+        // std::cout << a << " % " << b << " = ";
+        // std::cout << a % b << "\n";
+        std::cout << a << " to the " << b << " = ";
+        std::cout << pow(a, b) << "\n";
         std::cout << "\n";
     }
 }

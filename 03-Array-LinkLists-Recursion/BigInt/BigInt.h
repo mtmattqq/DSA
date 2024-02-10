@@ -300,4 +300,14 @@ std::istream& operator>>(std::istream &in, BigInt &a) {
     return in;
 }
 
+BigInt pow(BigInt a, BigInt x) {
+    BigInt ret(1);
+    while(x > BigInt(0)) {
+        if(x.odd()) ret *= a;
+        a *= a;
+        x.div_by_two();
+    }
+    return ret;
+}
+
 #endif
