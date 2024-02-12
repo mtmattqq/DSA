@@ -300,6 +300,7 @@ std::istream& operator>>(std::istream &in, BigInt &a) {
     return in;
 }
 
+BigInt pow(BigInt, BigInt);
 BigInt pow(BigInt a, BigInt x) {
     BigInt ret(1);
     while(x > BigInt(0)) {
@@ -308,6 +309,11 @@ BigInt pow(BigInt a, BigInt x) {
         x.div_by_two();
     }
     return ret;
+}
+
+BigInt gcd(BigInt, BigInt);
+BigInt gcd(BigInt a, BigInt b) {
+    return (a % b == 0 ? b : gcd(b, a % b));
 }
 
 #endif

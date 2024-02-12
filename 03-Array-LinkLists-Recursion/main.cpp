@@ -61,10 +61,10 @@ int main(int argc, char *argv[]) {
         // std::cout << a * b << "\n";
         // std::cout << a << " / " << b << " = ";
         // std::cout << a / b << "\n";
-        // std::cout << a << " % " << b << " = ";
-        // std::cout << a % b << "\n";
-        std::cout << a << " to the " << b << " = ";
-        std::cout << pow(a, b) << "\n";
+        std::cout << a << " % " << b << " = ";
+        std::cout << a % b << "\n";
+        // std::cout << a << " to the " << b << " = ";
+        // std::cout << pow(a, b) << "\n";
         std::cout << "\n";
     }
 }
