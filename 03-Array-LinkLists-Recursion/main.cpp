@@ -8,6 +8,7 @@
 #include "Exercises/R-3-3.h"
 #include "Exercises/R-3-4.h"
 #include "BigInt/BigInt.h"
+#include "Exercises/C-3-18.h"
 
 #define RESET "\e[0m"
 #define BOLD "\e[1m"
@@ -50,21 +51,17 @@ int main(int argc, char *argv[]) {
     }
     
     std::ifstream in(argv[1]);
-    BigInt a, b;
+    int n;
+    in >> n;
+    MyVector<int> v(n);
 
-    while(in >> a >> b) {
-        // std::cout << a << " + " << b << " = ";
-        // std::cout << a + b << "\n";
-        // std::cout << a << " - " << b << " = ";
-        // std::cout << a - b << "\n";
-        // std::cout << a << " x " << b << " = ";
-        // std::cout << a * b << "\n";
-        // std::cout << a << " / " << b << " = ";
-        // std::cout << a / b << "\n";
-        std::cout << a << " % " << b << " = ";
-        std::cout << a % b << "\n";
-        // std::cout << a << " to the " << b << " = ";
-        // std::cout << pow(a, b) << "\n";
-        std::cout << "\n";
+    for(int i{0}; i < n; ++i) {
+        in >> v[i];
     }
+
+    even_greater(v);
+    for(int i{0}; i < n; ++i) {
+        std::cout << v[i] << " ";
+    }
+    std::cout << "\n";
 }
