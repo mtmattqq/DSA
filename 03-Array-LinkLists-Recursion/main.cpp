@@ -59,7 +59,7 @@ int main(int argc, char *argv[]) {
         in >> v[i];
     }
 
-    even_greater(v);
+    even_greater_with_loop(v);
     for(int i{0}; i < n; ++i) {
         std::cout << v[i] << " ";
     }

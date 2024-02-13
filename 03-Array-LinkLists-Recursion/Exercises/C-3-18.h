@@ -33,6 +33,21 @@ void even_greater(MyVector<int> &v, int l, int r) {
     even_greater(v, l, r);
 }
 
+void even_greater_with_loop(MyVector<int> &v) {
+    int l{0}, r{int(v.size() - 1)};
+    while(r > l) {
+        if(even(v[l])) {
+            l++;
+            continue;
+        }
+        if(odd(v[r])) {
+            r--;
+            continue;
+        }
+        std::swap(v[l], v[r]);
+    }
+}
+
 void even_greater(MyVector<int> &v) {
     even_greater(v, 0, v.size() - 1);
 }
