@@ -59,6 +59,7 @@ void DataStructure::purchased(std::string &user_id) {
     std::cout << SEPERATOR;
     for(auto &product : data[user_id]) {
         for(auto &timestamp : product.second) {
+            if(!timestamp.second.sale) continue;
             Data &dt = timestamp.second;
             std::cout << dt.product_id << " " << dt.timestamp << " " 
                       << dt.price << " " << dt.age_group << " " 
