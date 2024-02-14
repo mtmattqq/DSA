@@ -18,6 +18,7 @@ struct Color {
 
 std::ostream& operator<<(std::ostream &out, const Color &color) {
     out << "\e[38;2;" << color.red << ";" << color.green << ";" << color.blue << "m";
+    return out;
 }
 
 int main(int argc, char *args[]) {
