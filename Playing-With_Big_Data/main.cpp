@@ -16,12 +16,12 @@ int main(int argc, char *args[]) {
     Data data;
     DataStructure all_data;
 
-    int64_t progress{0}, max_progress = 15000000;
+    int64_t progress{0}, max_progress = 15900000;
     while(in >> data) {
         all_data.insert(data);
         progress++;
         if(progress % 300000 == 0) {
-            std::cerr << "[";
+            std::cerr << " [";
             int len{0};
             for(int64_t i{0}; i * 300000 < progress; ++i) {
                 std::cerr << "=";
