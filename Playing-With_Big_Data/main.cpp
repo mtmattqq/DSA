@@ -16,9 +16,23 @@ int main(int argc, char *args[]) {
     Data data;
     DataStructure all_data;
 
+    int64_t progress{0}, max_progress = 15000000;
     while(in >> data) {
         all_data.insert(data);
+        progress++;
+        if(progress % 300000 == 0) {
+            std::cerr << "[";
+            int len{0};
+            for(int64_t i{0}; i * 300000 < progress; ++i) {
+                std::cerr << "=";
+            }
+            for(int i{0}; i + len < 50; ++i) {
+                std::cerr << " ";
+            }
+            std::cerr << "] " << double(progress) * 100.0 / max_progress << "%\r";
+        }
     }
+    std::cerr << "\n";
 
     std::string op, u, p, p1;
     while(std::cin >> op) {
