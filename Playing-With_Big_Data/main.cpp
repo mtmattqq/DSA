@@ -25,6 +25,7 @@ int main(int argc, char *args[]) {
             int len{0};
             for(int64_t i{0}; i * 300000 < progress; ++i) {
                 std::cerr << "=";
+                len++;
             }
             for(int i{0}; i + len < 50; ++i) {
                 std::cerr << " ";
