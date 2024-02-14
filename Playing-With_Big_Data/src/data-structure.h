@@ -35,8 +35,11 @@ struct Data {
 
 class DataStructure {
 public:
-    void get(std::string, std::string, int64_t);
-    void insert(Data);
+    void get(std::string&, std::string&, int64_t);
+    void purchased(std::string&);
+    void clicked(std::string&, std::string&);
+    void profit(int64_t, double);
+    void insert(Data&);
 private:
     // user_id, product_id, timestamp
     std::map<std::string, std::map<std::string, std::map<int64_t, Data>>> data;

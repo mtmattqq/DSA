@@ -4,6 +4,8 @@
 #include <string>
 #include <sstream>
 
+const int32_t MAX_PROFIT_OUTPUT{10};
+
 void skip(std::istream &in, int n) {
     for(int i{0}; i < n; ++i) {
         in.ignore(4096, '\t');
@@ -49,20 +51,55 @@ std::ostream& operator<<(std::ostream &out, Data &data) {
     return out;
 }
 
-// struct Data {
-//     bool sale;
-//     std::string product_id;
-//     int64_t timestamp;
-//     double price;
-//     std::string age_group;
-//     std::string gender;
-//     std::string user_id;
+void DataStructure::get(std::string &user_id, std::string &product_id, int64_t timestamp) {
+    std::cout << SEPERATOR << data[user_id][product_id][timestamp].sale << "\n" << SEPERATOR;
+}
 
-//     // bool operator<(Data b);
-//     friend std::ostream& operator<<(std::ostream&, Data&);
-//     friend std::istream& operator>>(std::istream&, Data&);
-// };
+void DataStructure::purchased(std::string &user_id) {
+    std::cout << SEPERATOR;
+    for(auto &product : data[user_id]) {
+        for(auto &timestamp : product.second) {
+            Data &dt = timestamp.second;
+            std::cout << dt.product_id << " " << dt.timestamp << " " 
+                      << dt.price << " " << dt.age_group << " " 
+                      << dt.gender << "\n";
+        }
+    }
+    std::cout << SEPERATOR;
+}
 
-void DataStructure::get(std::string user_id, std::string product_id, int64_t timestamp) {
-    std::cout << SEPERATOR << data[user_id][product_id][timestamp].sale << SEPERATOR;
+void DataStructure::clicked(std::string &p1, std::string &p2) {
+    std::cout << SEPERATOR;
+    for(auto &user : data) {
+        if(user.second.count(p1) && user.second.count(p2)) {
+            std::cout << user.first << "\n";
+        }
+    }
+    std::cout << SEPERATOR;
+}
+
+void DataStructure::profit(int64_t time, double rate) {
+    std::cout << SEPERATOR;
+    int fited_user_number{0};
+    for(auto &user : data) {
+        int32_t sales_number{0}, click{0};
+        for(auto &product : user.second) {
+            for(auto timestamp = product.second.lower_bound(time); timestamp != product.second.end(); ++timestamp) {
+                sales_number += (*timestamp).second.sale;
+                click++;
+            }
+        }
+        if(click != 0 && double(sales_number) / click >= rate) {
+            std::cout << user.first << "\n";
+            fited_user_number++;
+            if(fited_user_number >= MAX_PROFIT_OUTPUT) {
+                break;
+            }
+        }
+    }
+    std::cout << SEPERATOR;
+}
+
+void DataStructure::insert(Data &dt) {
+    data[dt.user_id][dt.product_id][dt.timestamp] = dt;
 }
