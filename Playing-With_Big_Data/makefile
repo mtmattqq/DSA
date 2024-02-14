@@ -1,5 +1,5 @@
 VPATH = src
-objects = data-structure.o io.o main.o
+objects = data-structure.o main.o
 demo : $(objects)
 	g++ $(objects) -o demo
 

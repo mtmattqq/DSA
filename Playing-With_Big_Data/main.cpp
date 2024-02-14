@@ -6,6 +6,20 @@
 #define RESET "\e[0m"
 #define RED "\e[0;41m"
 
+struct Color {
+    short red, green, blue;
+    Color() {red = green = blue = 0;}
+    Color(int r, int g, int b) {
+        red = r;
+        green = g;
+        blue = b;
+    }
+};
+
+std::ostream& operator<<(std::ostream &out, const Color &color) {
+    out << "\e[38;2;" << color.red << ";" << color.green << ";" << color.blue << "m";
+}
+
 int main(int argc, char *args[]) {
     if(argc < 2) {
         std::cout << RED "Error: miss argument: " RESET "\"input file name\"" << "\n";
@@ -21,19 +35,21 @@ int main(int argc, char *args[]) {
         all_data.insert(data);
         progress++;
         if(progress % 300000 == 0) {
-            std::cerr << " [";
+            double rate{double(progress) * 100.0 / max_progress};
+            std::cerr << Color(255 - rate * 255, rate * 255, 50) << " [";
             int len{0};
-            for(int64_t i{0}; i * 300000 < progress; ++i) {
+            for(int64_t i{0}; i * 300000 < progress - 1; ++i) {
                 std::cerr << "=";
                 len++;
             }
+            std::cerr << ">";
             for(int i{0}; i + len < 50; ++i) {
                 std::cerr << " ";
             }
             std::cerr << "] " << double(progress) * 100.0 / max_progress << "%\r";
         }
     }
-    std::cerr << "\n";
+    std::cerr << "                                                                                \n";
 
     std::string op, u, p, p1;
     while(std::cin >> op) {
