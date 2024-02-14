@@ -47,7 +47,7 @@ int main(int argc, char *args[]) {
             for(int i{0}; i + len < 50; ++i) {
                 std::cerr << " ";
             }
-            std::cerr << "] " << double(progress) * 100.0 / max_progress << "%\r";
+            std::cerr << "] " << double(progress) * 100.0 / max_progress << "%                    \r";
         }
     }
     std::cerr << "                                                                                \n";
