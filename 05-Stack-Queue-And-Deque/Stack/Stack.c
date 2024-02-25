@@ -11,6 +11,7 @@ Stack NewStack(int sz) {
     }
     new_stack.val = calloc(new_stack.base, sizeof(int));
     new_stack.top = -1;
+    return new_stack;
 }
 
 void Rebase(Stack* st) {
