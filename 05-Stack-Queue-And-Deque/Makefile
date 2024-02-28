@@ -21,6 +21,6 @@ Queue.o : Queue/Queue.c Queue/Queue.h
 	gcc -c -std=c99 Queue/Queue.c
 
 clean : 
-	rm -rf *.o
-	rm -f TestStack
-	rm -f TestQueue
+	-rm -rf *.o
+	-rm -f TestStack
+	-rm -f TestQueue
