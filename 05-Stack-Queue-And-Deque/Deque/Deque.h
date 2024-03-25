@@ -6,11 +6,11 @@ typedef struct {
 } Block;
 
 Block* NewBlock(int sz);
-void DeleteBlock(); 
+void DeleteBlock(Block*);
 
 typedef struct {
-    Block *val;
-    int sz;
+    Block **val;
+    int sz, chunk_size;
 } Deque;
 
 Deque NewDeque(int sz);
