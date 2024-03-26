@@ -3,12 +3,18 @@
 
 typedef struct {
     int *val;
-    int sz, id, base;
+    int left, right, id, base;
 } Block;
 
-Block NewBlock(int base, int id);
-bool BPushBack(Block* block, int val);
+Block NewBlock(int base, int left, int right, int id);
+bool BPushBack(Block *block, int val);
+bool BPopBack(Block *block);
+bool BPushFront(Block *block, int val);
+bool BPopFront(Block *block);
 void DeleteBlock(Block*);
+int* BGet(Block *block, int index);
+int BSize(Block *block);
+
 
 typedef struct {
     int64_t sz, base;
@@ -28,6 +34,7 @@ typedef struct {
 } HashTable;
 
 HashTable NewHashTable();
+void DeleteHashTable(HashTable*);
 void HInsert(HashTable *hash_table, Block block);
 Block* HGet(HashTable *hash_table, int id);
 void HRemove(HashTable *hash_table, int id);
@@ -44,4 +51,5 @@ void PushBack(Deque *deque, int val);
 void PopBack(Deque *deque);
 void PushFront(Deque *deque, int val);
 void PopFront(Deque *deque);
-void DeleteDeque(Deque *dq);
+void DeleteDeque(Deque *deque);
+int* DqGet(Deque *deque, int index);

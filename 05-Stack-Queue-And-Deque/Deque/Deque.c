@@ -1,23 +1,66 @@
 #include "Deque.h"
 #include <stdlib.h>
 
-Block NewBlock(int base, int id) {
+// [left, right]
+Block NewBlock(int base, int left, int right, int id) {
     Block new_block;
     new_block.val = calloc(base, sizeof(int));
-    new_block.sz = 0;
+    new_block.left = left;
+    new_block.right = right;
     new_block.base = base;
     return new_block;
 }
 
 void DeleteBlock(Block *block) {
+    if(block->base == 0) return;
     free(block->val);
+    block->base = 0;
 }
 
 // Return true when block is full.
 bool BPushBack(Block* block, int val) {
-    block->val[block->sz] = val;
-    block->sz++;
-    return block->sz == block->base;
+    if(block->right == block->base - 1) return true;
+    if(block->left == block->right) {
+        block->val[block->right] = val;
+        return false;
+    }
+    block->right++;
+    block->val[block->right] = val;
+    return false;
+}
+
+bool BPopBack(Block *block) {
+    block->val[block->right] = 0;
+    block->right--;
+    return block->right < block->left;
+}
+
+bool BPushFront(Block* block, int val) {
+    if(block->left == 0) return true;
+    if(block->left == block->right) {
+        block->val[block->right] = val;
+        return false;
+    }
+    block->left--;
+    block->val[block->left] = val;
+    return false;
+}
+
+bool BPopFront(Block *block) {
+    block->val[block->left] = 0;
+    block->left++;
+    return block->left > block->right;
+}
+
+int* BGet(Block *block, int index) {
+    index += block->left;
+    if(index < 0 || index > block->right)
+        return NULL;
+    return &(block->val[index]);
+}
+
+int BSize(Block *block) {
+    return block->right - block->left + 1;
 }
 
 // ----------------------------------------
@@ -34,6 +77,10 @@ Vector NewVector() {
 }
 
 void DeleteVector(Vector *vec) {
+    if(vec->base == 0) return;
+    for(int i = 0; i < vec->sz; ++i) {
+        DeleteBlock(&(vec->array[i]));
+    }
     free(vec->array);
 }
 
@@ -57,6 +104,12 @@ HashTable NewHashTable() {
     return new_hash_table;
 }
 
+void DeleteHashTable(HashTable *hash_table) {
+    for(int i = 0; i < DEQUE_HASH_TABLE_SIZE; ++i) {
+        DeleteVector(&(hash_table->val[i]));
+    }
+}
+
 int HashFunction(int id) {
     return ((id % DEQUE_HASH_TABLE_SIZE) + DEQUE_HASH_TABLE_SIZE) % DEQUE_HASH_TABLE_SIZE;
 }
@@ -64,8 +117,10 @@ int HashFunction(int id) {
 void HInsert(HashTable *hash_table, Block block) {
     int insert_index = HashFunction(block.id);
     for(int i = 0; i < hash_table->val[insert_index].sz; ++i) {
-        if(VGet(&(hash_table->val[insert_index]), i)->id == block.id) {
+        Block *current_block = VGet(&(hash_table->val[insert_index]), i);
+        if(current_block->base == 0 || current_block->id == block.id) {
             *VGet(&(hash_table->val[insert_index]), i) = block;
+            return;
         }
     }
     VPushBack(&(hash_table->val[insert_index]), block);
@@ -102,32 +157,74 @@ Deque NewDeque(int sz, int chunk_size) {
 }
 
 void PushBack(Deque *deque, int val) {
+    deque->sz++;
     Block *current_block = HGet(&(deque->val), deque->back_block);
-    if(current_block == NULL) {
-        Block new_block = NewBlock(deque->chunk_size, deque->back_block);
+    if(current_block == NULL || BPushBack(current_block, val)) {
+        Block new_block = NewBlock(deque->chunk_size, 0, 0, deque->back_block);
         HInsert(&(deque->val), new_block);
         current_block = HGet(&(deque->val), deque->back_block);
-    }
-    if(BPushBack(current_block, val)) {
-        deque->back_block++;
+        BPushBack(current_block, val);
         deque->back_index = 0;
-    } else {
-        deque->back_index++;
+        return;
     }
+    deque->back_index++;
 }
 
 void PopBack(Deque *deque) {
+    deque->sz--;
     Block *current_block = HGet(&(deque->val), deque->back_block);
     if(current_block == NULL) {
         return;
     }
-    current_block->val[current_block->sz] = 0;
-    current_block->sz--;
-    if(current_block->sz == 0) {
+    if(BPopBack(current_block)) {
         HRemove(&(deque->val), current_block->id);
+        if(deque->sz == 0) {
+            return;
+        }
         deque->back_block--;
-        deque->back_index = 0;
+        deque->back_index = deque->chunk_size - 1;
         return;
     }
     deque->back_index--;
+}
+
+void PushFront(Deque *deque, int val) {
+    deque->sz++;
+    Block *current_block = HGet(&(deque->val), deque->front_block);
+    if(current_block == NULL || BPushFront(current_block, val)) {
+        Block new_block = NewBlock(
+            deque->chunk_size, deque->chunk_size - 1, deque->chunk_size - 1, deque->front_block);
+        HInsert(&(deque->val), new_block);
+        current_block = HGet(&(deque->val), deque->front_block);
+        BPushFront(current_block, val);
+        deque->front_index = deque->chunk_size - 1;
+        return;
+    }
+    deque->front_index--;
+}
+
+void PopFront(Deque *deque) {
+    deque->sz--;
+    Block *current_block = HGet(&(deque->val), deque->front_block);
+    if(current_block == NULL) {
+        return;
+    }
+    if(BPopFront(current_block)) {
+        HRemove(&(deque->val), current_block->id);
+        if(deque->sz == 0) {
+            return;
+        }
+        deque->front_block++;
+        deque->front_index = 0;
+        return;
+    }
+    deque->front_index++;
+}
+
+void DeleteDeque(Deque *deque) {
+    DeleteHashTable(&(deque->val));
+}
+
+int* DqGet(Deque *deque, int index) {
+    int first_sz = BSize(HGet(&(deque->val), deque->front_block));
 }
