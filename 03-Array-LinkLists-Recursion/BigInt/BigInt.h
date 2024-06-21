@@ -103,9 +103,9 @@ BigInt operator*(BigInt a, BigInt b) {
         for(int j{0}; j < b.number.size(); ++j) {
             ret.number[i + j] += a.number[i] * b.number[j];
         }
+        ret.rounding();
     }
     ret.sign = a.sign * b.sign;
-    ret.rounding();
     return ret;
 }
 
